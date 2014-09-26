@@ -69,6 +69,15 @@ class ImageExtractor
 
         return item["content"]
       end
+
+      meta = doc.css("meta[property~='twitter:image']")
+
+      meta.each do |item|
+        next if item["content"].empty?
+
+        return item["content"]
+      end
+
     rescue
       log "Error getting OG tag: #{$!}"
     end
