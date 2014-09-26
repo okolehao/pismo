@@ -70,12 +70,12 @@ class ImageExtractor
         return item["content"]
       end
 
-      meta = doc.css("meta[property~='twitter:image']")
+      meta = doc.xpath('//meta[@name="twitter:image"]/@content')
 
       meta.each do |item|
-        next if item["content"].empty?
+        next if item.value.empty?
 
-        return item["content"]
+        return item.value.to_s
       end
 
     rescue
