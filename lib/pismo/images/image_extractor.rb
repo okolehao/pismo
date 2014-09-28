@@ -13,7 +13,10 @@ class ImageExtractor
 
   def initialize(document, url, options = {})
     @logger = options[:logger]
-    @logger = Logger.new(STDERR) if @logger.nil?
+    if @logger.nil?
+      @logger = Logger.new(STDERR)
+      @logger.level = Logger::ERROR
+    end
 
     @options = options
     bad_image_names = options[:bad_image_names] || %w"
