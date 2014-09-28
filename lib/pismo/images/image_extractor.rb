@@ -25,7 +25,7 @@ class ImageExtractor
     @url = url
     @min_width = options[:min_width] || 100
     @min_height = options[:min_height] || 100
-    @top_content_candidate = document.reader_doc.content_at(0)
+    @top_content_candidate = document.reader_doc.content_at(0) unless document.reader_doc.content_candidates.nil?
     @max_bytes = options[:max_bytes] || 15728640
     @min_bytes = options[:min_bytes] || 5000
   end
@@ -35,7 +35,7 @@ class ImageExtractor
 
     find_image_from_meta_tags
 
-    check_for_large_images(top_content_candidate, 0, 0) if @images.empty?
+    check_for_large_images(top_content_candidate, 0, 0) if @images.empty? && !top_content_candidate.empty?
 
     return @images.slice(0, limit)
   end
@@ -134,7 +134,7 @@ class ImageExtractor
           # We start at the top node then recursively go up to siblings/parent/grandparent to find something good
           if prev_sibling = node.previous_sibling
             check_for_large_images prev_sibling, parent_depth, sibling_depth + 1
-          else
+          elsif node.respond_to?('parent')
             check_for_large_images(node.parent, parent_depth + 1, sibling_depth)
           end
         end
