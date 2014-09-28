@@ -28,7 +28,7 @@ class ImageExtractor
     @url = url
     @min_width = options[:min_width] || 100
     @min_height = options[:min_height] || 100
-    @top_content_candidate = document.reader_doc.content_at(0) unless document.reader_doc.content_candidates.nil?
+    @top_content_candidate = document.reader_doc.content_at(0) unless document.reader_doc.content_candidates.nil? || document.reader_doc.content_candidates.blank?
     @max_bytes = options[:max_bytes] || 15728640
     @min_bytes = options[:min_bytes] || 5000
   end
